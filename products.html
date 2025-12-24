@@ -293,8 +293,8 @@
         var userName = getUserFromCookie("loggedInUserName");
 
         if (!userEmail) {
-          // User not logged in, redirect to login page
-          window.location.href = "login.html";
+          // User not logged in, redirect to index page
+          window.location.href = "index.html";
           return false;
         }
 
@@ -308,7 +308,7 @@
       // ===== LOGOUT FUNCTION =====
       function handleLogout() {
         deleteAllCookies();
-        window.location.href = "login.html";
+        window.location.href = "index.html";
       }
 
       // ===== FETCH PRODUCTS USING XMLHttpRequest =====
