@@ -19,13 +19,13 @@ A simple e-commerce website built with **HTML, CSS, and JavaScript**. Users can 
 ## 📸 Screenshots
 
 ### Login Page
-![Login](https://via.placeholder.com/800x400/f5f5f5/333?text=Login+Page)
+<img src="Picture3.png" width="400" alt="Login Page">
 
 ### Products Page
-![Products](https://via.placeholder.com/800x400/667eea/fff?text=Products+Page)
+<img src="Picture1.png" width="400" alt="Login Page">
 
 ### Product Details
-![Details](https://via.placeholder.com/800x400/ffffff/333?text=Product+Details)
+<img src="Picture2.png" width="400" alt="Login Page">
 
 ---
 
