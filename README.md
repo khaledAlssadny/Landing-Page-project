@@ -2,7 +2,7 @@
 
 A simple e-commerce website built with **HTML, CSS, and JavaScript**. Users can sign up, browse products, and view product details.
 
-![ShopHub](https://via.placeholder.com/1000x300/667eea/ffffff?text=ShopHub+-+Online+Store)
+<img src="Picture1.png" width="400" alt="Login Page">
 
 ---
 
