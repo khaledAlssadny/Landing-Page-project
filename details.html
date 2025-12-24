@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - ShopHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #667eea;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Product Details */
+        .product-details {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* Left Side - Images */
+        .product-images {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #eee;
+        }
+
+        .thumbnail-images {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .thumbnail:hover {
+            border-color: #667eea;
+        }
+
+        .thumbnail.active {
+            border-color: #667eea;
+            border-width: 3px;
+        }
+
+        /* Right Side - Info */
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-brand {
+            font-size: 14px;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .product-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+        }
+
+        .stars {
+            color: #ffc107;
+            font-size: 18px;
+        }
+
+        .rating-text {
+            color: #666;
+        }
+
+        .product-price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .discount-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: -10px;
+        }
+
+        .original-price {
+            font-size: 18px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .product-description {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .product-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .meta-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+        }
+
+        .meta-label {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .stock-badge {
+            background: #27ae60;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .out-of-stock-badge {
+            background: #e74c3c;
+        }
+
+        .warranty-info {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            font-size: 14px;
+            color: #1976d2;
+        }
+
+        .shipping-info {
+            background: #fff3e0;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+            font-size: 14px;
+            color: #f57c00;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .error-message h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .main-image {
+                height: 300px;
+            }
+
+            .product-title {
+                font-size: 24px;
+            }
+
+            .product-price {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🛍️ ShopHub</div>
+            <div class="header-right">
+                <button class="back-btn" id="backBtn">← Back to Products</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container -->
+    <div class="container">
+        <!-- Loading -->
+        <div class="loading" id="loadingSection">
+            <div class="spinner"></div>
+            <p>Loading product details...</p>
+        </div>
+
+        <!-- Error Message -->
+        <div class="error-message" id="errorMessage" style="display: none;">
+            <h3>Oops! Something went wrong</h3>
+            <p id="errorText"></p>
+            <button class="back-btn" onclick="goBackToProducts()" style="margin-top: 20px;">Go Back</button>
+        </div>
+
+        <!-- Product Details -->
+        <div class="product-details" id="productDetails">
+            <div class="product-layout">
+                <!-- Left Side - Images -->
+                <div class="product-images">
+                    <img id="mainImage" class="main-image" src="" alt="Product Image">
+                    <div class="thumbnail-images" id="thumbnailImages"></div>
+                </div>
+
+                <!-- Right Side - Info -->
+                <div class="product-info">
+                    <div class="product-brand" id="productBrand"></div>
+                    <h1 class="product-title" id="productTitle"></h1>
+                    
+                    <div class="product-rating">
+                        <span class="stars" id="productStars"></span>
+                        <span class="rating-text" id="productRating"></span>
+                    </div>
+
+                    <div class="product-price" id="productPrice"></div>
+                    <div class="discount-info" id="discountInfo" style="display: none;">
+                        <span class="original-price" id="originalPrice"></span>
+                        <span class="discount-badge" id="discountBadge"></span>
+                    </div>
+
+                    <div class="product-description" id="productDescription"></div>
+
+                    <div class="product-meta" id="productMeta"></div>
+
+                    <div class="warranty-info" id="warrantyInfo"></div>
+                    <div class="shipping-info" id="shippingInfo"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== COOKIE FUNCTIONS =====
+        function getUserFromCookie(cookieName) {
+            var name = cookieName + "=";
+            var cookies = document.cookie.split(';');
+            for(var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if(cookie.indexOf(name) === 0) {
+                    return decodeURIComponent(cookie.substring(name.length));
+                }
+            }
+            return null;
+        }
+
+        // ===== CHECK AUTHENTICATION =====
+        function checkIfLoggedIn() {
+            var userEmail = getUserFromCookie('loggedInUserEmail');
+            
+            if(!userEmail) {
+                window.location.href = 'login.html';
+                return false;
+            }
+            
+            return true;
+        }
+
+        // ===== GO BACK TO PRODUCTS =====
+        function goBackToProducts() {
+            window.location.href = 'products.html';
+        }
+
+        // ===== GET PRODUCT ID FROM COOKIE =====
+        function getProductIdFromCookie() {
+            return getUserFromCookie('selectedProductId');
+        }
+
+        // ===== FETCH PRODUCT DETAILS USING XMLHttpRequest =====
+        function getProductDetails(productId) {
+            var xhr = new XMLHttpRequest();
+            
+            xhr.open('GET', 'https://dummyjson.com/products/' + productId, true);
+            
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState === 4) {
+                    var loadingSection = document.getElementById('loadingSection');
+                    loadingSection.style.display = 'none';
+                    
+                    if(xhr.status === 200) {
+                        var product = JSON.parse(xhr.responseText);
+                        displayProductDetails(product);
+                    } else {
+                        showError('Failed to load product details. Status: ' + xhr.status);
+                    }
+                }
+            };
+            
+            xhr.onerror = function() {
+                var loadingSection = document.getElementById('loadingSection');
+                loadingSection.style.display = 'none';
+                showError('Network error. Please check your internet connection.');
+            };
+            
+            xhr.send();
+        }
+
+        // ===== SHOW ERROR =====
+        function showError(message) {
+            var errorMessage = document.getElementById('errorMessage');
+            var errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // ===== CHANGE MAIN IMAGE =====
+        function changeMainImage(imageSrc, thumbnailElement) {
+            var mainImage = document.getElementById('mainImage');
+            mainImage.src = imageSrc;
+            
+            // Remove active class from all thumbnails
+            var thumbnails = document.querySelectorAll('.thumbnail');
+            for(var i = 0; i < thumbnails.length; i++) {
+                thumbnails[i].classList.remove('active');
+            }
+            
+            // Add active class to clicked thumbnail
+            thumbnailElement.classList.add('active');
+        }
+
+        // ===== DISPLAY PRODUCT DETAILS =====
+        function displayProductDetails(product) {
+            // Show product details section
+            var productDetails = document.getElementById('productDetails');
+            productDetails.style.display = 'block';
+            
+            // Brand
+            var productBrand = document.getElementById('productBrand');
+            productBrand.textContent = product.brand || 'Generic Brand';
+            
+            // Title
+            var productTitle = document.getElementById('productTitle');
+            productTitle.textContent = product.title;
+            
+            // Rating
+            var productStars = document.getElementById('productStars');
+            var productRating = document.getElementById('productRating');
+            productStars.textContent = '⭐ ' + product.rating.toFixed(1);
+            productRating.textContent = '(' + product.rating.toFixed(1) + ' out of 5)';
+            
+            // Price
+            var productPrice = document.getElementById('productPrice');
+            productPrice.textContent = '$' + product.price.toFixed(2);
+            
+            // Discount
+            if(product.discountPercentage > 0) {
+                var discountInfo = document.getElementById('discountInfo');
+                var originalPrice = document.getElementById('originalPrice');
+                var discountBadge = document.getElementById('discountBadge');
+                
+                var originalPriceValue = product.price / (1 - product.discountPercentage / 100);
+                originalPrice.textContent = '$' + originalPriceValue.toFixed(2);
+                discountBadge.textContent = product.discountPercentage.toFixed(0) + '% OFF';
+                discountInfo.style.display = 'flex';
+            }
+            
+            // Description
+            var productDescription = document.getElementById('productDescription');
+            productDescription.textContent = product.description;
+            
+            // Meta Information
+            var productMeta = document.getElementById('productMeta');
+            productMeta.innerHTML = '';
+            
+            // Category
+            var categoryItem = document.createElement('div');
+            categoryItem.className = 'meta-item';
+            categoryItem.innerHTML = '<span class="meta-label">Category:</span><span class="meta-value">' + product.category + '</span>';
+            productMeta.appendChild(categoryItem);
+            
+            // Stock
+            var stockItem = document.createElement('div');
+            stockItem.className = 'meta-item';
+            var stockBadge = document.createElement('span');
+            if(product.stock > 0) {
+                stockBadge.className = 'stock-badge';
+                stockBadge.textContent = 'In Stock: ' + product.stock + ' items';
+            } else {
+                stockBadge.className = 'stock-badge out-of-stock-badge';
+                stockBadge.textContent = 'Out of Stock';
+            }
+            stockItem.innerHTML = '<span class="meta-label">Availability:</span>';
+            stockItem.appendChild(stockBadge);
+            productMeta.appendChild(stockItem);
+            
+            // SKU
+            if(product.sku) {
+                var skuItem = document.createElement('div');
+                skuItem.className = 'meta-item';
+                skuItem.innerHTML = '<span class="meta-label">SKU:</span><span class="meta-value">' + product.sku + '</span>';
+                productMeta.appendChild(skuItem);
+            }
+            
+            // Weight
+            if(product.weight) {
+                var weightItem = document.createElement('div');
+                weightItem.className = 'meta-item';
+                weightItem.innerHTML = '<span class="meta-label">Weight:</span><span class="meta-value">' + product.weight + ' kg</span>';
+                productMeta.appendChild(weightItem);
+            }
+            
+            // Warranty
+            var warrantyInfo = document.getElementById('warrantyInfo');
+            warrantyInfo.textContent = '✓ ' + (product.warrantyInformation || 'Standard warranty included');
+            
+            // Shipping
+            var shippingInfo = document.getElementById('shippingInfo');
+            shippingInfo.textContent = '🚚 ' + (product.shippingInformation || 'Standard shipping available');
+            
+            // Images
+            var mainImage = document.getElementById('mainImage');
+            mainImage.src = product.images[0];
+            mainImage.alt = product.title;
+            
+            // Thumbnails
+            var thumbnailImages = document.getElementById('thumbnailImages');
+            thumbnailImages.innerHTML = '';
+            
+            for(var i = 0; i < product.images.length; i++) {
+                var thumbnail = document.createElement('img');
+                thumbnail.className = 'thumbnail';
+                if(i === 0) {
+                    thumbnail.classList.add('active');
+                }
+                thumbnail.src = product.images[i];
+                thumbnail.alt = product.title;
+                
+                // Closure to capture current image
+                (function(imageSrc, thumbElement) {
+                    thumbElement.addEventListener('click', function() {
+                        changeMainImage(imageSrc, thumbElement);
+                    });
+                })(product.images[i], thumbnail);
+                
+                thumbnailImages.appendChild(thumbnail);
+            }
+        }
+
+        // ===== INITIALIZE PAGE =====
+        if(checkIfLoggedIn()) {
+            var productId = getProductIdFromCookie();
+            
+            if(productId) {
+                getProductDetails(productId);
+            } else {
+                showError('No product selected. Please go back and select a product.');
+            }
+        }
+
+        // Back button event
+        document.getElementById('backBtn').addEventListener('click', goBackToProducts);
+    </script>
+</body>
+</html>
